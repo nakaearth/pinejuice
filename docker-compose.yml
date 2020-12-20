@@ -1,0 +1,69 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    env_file:
+      - ./environments/db.env
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./containers/db/conf.d:/etc/mysql/conf.d:ro
+
+  elasticsearch:
+    build:
+      context: docker_image/elasticsearch
+    container_name: elasticsearch
+    environment:
+      - node.name=es_master
+      - discovery.type=single-node
+      - discovery.seed_hosts=elasticsearch
+      - cluster.name=docker-c1luster
+      - bootstrap.memory_lock=true
+      - "http.host=0.0.0.0"
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  headPlugin:
+    image: 'mobz/elasticsearch-head:7'
+    container_name: head
+    ports:
+      - '9100:9100'
+
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./environments/app.env
+    volumes:
+      - bundle_install:/famiphotos/vendor/bundle
+      - ./app:/famiphotos/app
+      - ./bin:/famiphotos/bin
+      - ./config:/famiphotos/config
+      - ./config.ru:/famiphotos/config.ru
+      - ./db:/famiphotos/db
+      - ./.rubocop.yml:/famiphotos/.rubocop.yml
+      - ./Gemfile:/famiphotos/Gemfile
+      - ./Gemfile.lock:/famiphotos/Gemfile.lock
+      - ./lib:/famiphotos/lib
+      - ./public:/famiphotos/public
+      - ./Rakefile:/famiphotos/Rakefile
+      - ./spec:/famiphotos/spec
+      - ./log:/famiphotos/log
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s"
+    ports:
+      - "3000:3000"
+      - "5000:5000"
+    stdin_open: true
+    tty: true
+    links:
+      - db
+      - elasticsearch
+
+volumes:
+  db_data:
+    driver: local
+  bundle_install:

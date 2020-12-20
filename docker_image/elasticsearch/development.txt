@@ -1,0 +1,3 @@
+build:  docker build -t elasticsearch5.4 .
+初回起動: docker run -d -p 9200:9200 --name elasticsearch5.4 elasticsearch5.4
+起動：    docker start elasticsearch5.4
