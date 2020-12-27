@@ -9,12 +9,10 @@ RSpec.describe UserRegistration::TwitterUserUsecase do
         {
           provider: 'twitter',
           uid: '12345667',
-          info: {
-            email: 'test@gamil',
-            name: 'テスト太郎',
-            nickname: 'jbloggs',
-            image: 'http://graph.facebook.com/1234567/picture?type=square'
-          },
+          email: 'test@gamil',
+          name: 'テスト太郎',
+          nickname: 'jbloggs',
+          image_url: 'http://graph.facebook.com/1234567/picture?type=square',
           credentials: {
             token: 'ABCDEF...', # OAuth 2.0 access_token, which you may wish to store
             secret: '123ABCDEF...' # OAuth 2.0 access_token, which you may wish to store
@@ -27,15 +25,17 @@ RSpec.describe UserRegistration::TwitterUserUsecase do
                                                              name: params[:name],
                                                              uid: params[:uid],
                                                              nickname: params[:nickname],
-                                                             image_url: params[:image_url], )
+                                                             image_url: params[:image_url],
+                                                             credentials: { token: 'aaa',
+                                                                            secret: 'bb' })
       end
 
       it 'パラメータで渡された値でUser登録される' do
         expect(@user.provider).to eq params[:provider]
-        expect(@user.name).to eq params[:info][:name]
-        expect(@user.email).to eq params[:info][:email]
-        expect(@user.image_url).to eq params[:info][:image]
-        expect(@user.nickname).to eq params[:info][:nickname]
+        expect(@user.name).to eq params[:name]
+        expect(@user.email).to eq params[:email]
+        expect(@user.image_url).to eq params[:image_url]
+        expect(@user.nickname).to eq params[:nickname]
         expect(@user.access_token).to eq params[:credentials][:token]
         expect(@user.secret_token).to eq params[:credentials][:secret]
       end

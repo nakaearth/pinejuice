@@ -39,20 +39,20 @@ services:
     env_file:
       - ./environments/app.env
     volumes:
-      - bundle_install:/famiphotos/vendor/bundle
-      - ./app:/famiphotos/app
-      - ./bin:/famiphotos/bin
-      - ./config:/famiphotos/config
-      - ./config.ru:/famiphotos/config.ru
-      - ./db:/famiphotos/db
-      - ./.rubocop.yml:/famiphotos/.rubocop.yml
-      - ./Gemfile:/famiphotos/Gemfile
-      - ./Gemfile.lock:/famiphotos/Gemfile.lock
-      - ./lib:/famiphotos/lib
-      - ./public:/famiphotos/public
-      - ./Rakefile:/famiphotos/Rakefile
-      - ./spec:/famiphotos/spec
-      - ./log:/famiphotos/log
+      - bundle_install:/pinejuice/vendor/bundle
+      - ./app:/pinejuice/app
+      - ./bin:/pinejuice/bin
+      - ./config:/pinejuice/config
+      - ./config.ru:/pinejuice/config.ru
+      - ./db:/pinejuice/db
+      - ./.rubocop.yml:/pinejuice/.rubocop.yml
+      - ./Gemfile:/pinejuice/Gemfile
+      - ./Gemfile.lock:/pinejuice/Gemfile.lock
+      - ./lib:/pinejuice/lib
+      - ./public:/pinejuice/public
+      - ./Rakefile:/pinejuice/Rakefile
+      - ./spec:/pinejuice/spec
+      - ./log:/pinejuice/log
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s"
     ports:
       - "3000:3000"
