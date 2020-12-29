@@ -3,7 +3,7 @@ module UserRegistration
     class << self
       def execute(email:, name:, uid:, nickname:, image_url:, credentials: {})
         ActiveRecord::Base.transaction do
-          User.find_or_create_by(email: email, provider: 'twitter') do |user|
+          User.find_or_create_by!(email: email, provider: 'twitter') do |user|
             user.name = name
             user.email = email
             user.provider = 'twitter'
