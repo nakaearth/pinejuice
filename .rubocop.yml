@@ -1,102 +1,15 @@
+
+inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rails
+
 AllCops:
-  TargetRubyVersion: 2.7
+  NewCops: enable
   Exclude:
-    - 'bin/*'
-    - 'config/**/*'
-    - 'bundle_bin/*'
-    - 'test/test_helper.rb'
-    - 'test/support/**/*'
-    - 'script/**/*'
+    - 'app/**/application*.rb'
+    - 'app/channels/application_cable/channel.rb'
     - 'vendor/**/*'
-    - 'factories/**/*'
-    - 'spec/dummy/**/*'
-    - '**/Rakefile'
-    - '**/Gemfile'
-    - '**/Guardfile'
-    - '**/config.ru'
-    - '**/*/schema.rb'
-    - '*.gemspec'
-Metrics/AbcSize:
-  Enabled: false
-Metrics/BlockNesting:
-  Enabled: false
-Metrics/BlockLength:
-  Exclude:
-    - 'app/models/concerns/*'
-Metrics/ClassLength:
-  Enabled: false
-Metrics/ModuleLength:
-  Enabled: false
-Metrics/CyclomaticComplexity:
-  Enabled: false
-Metrics/LineLength:
-  Enabled: false
-Metrics/MethodLength:
-  Enabled: false
-Metrics/ParameterLists:
-  Enabled: false
-Metrics/PerceivedComplexity:
-  Enabled: false
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-Style/AsciiComments:
-  Enabled: false
-Style/ClassAndModuleChildren: # class Module::Class といった記述方法を許可
-  Enabled: false
-Style/RaiseArgs:
-  Enabled: false
-Style/Lambda:
-  Enabled: false
-Style/StringLiterals:
-  Enabled: false
-Style/Documentation:
-  Enabled: false
-Style/SpaceBeforeFirstArg:
-  Enabled: false
-Style/MultilineOperationIndentation:
-  Enabled: false
-Style/AccessorMethodName:
-  Enabled: false
-Style/PredicateName:
-  Enabled: false
-Style/WordArray:
-  Enabled: false
-Style/AndOr:
-  Enabled: false
-Style/BlockComments:
-  Enabled: false
-Style/CommentIndentation:
-  Enabled: false
-# https://github.com/bbatsov/ruby-style-guide#no-bang-bang
-Style/DoubleNegation:
-  Enabled: false
-Style/AlignParameters:
-  Enabled: false
-GuardClause:
-  MinBodyLength: 4
-Style/IfUnlessModifier:
-  Enabled: false
-Lint/AmbiguousOperator:
-  Exclude:
-    # eq -1 のような記述をすると、式が曖昧だとrubocopに怒られる
-    - 'test/**/*'
-Style/Next:
-  Enabled: true
-Style/SingleLineBlockParams:
-  Enabled: false
-Style/TrivialAccessors:
-  Enabled: true
-Style/BracesAroundHashParameters:
-  Enabled: false
-HandleExceptions:
-  Enabled: false
-Style/RescueModifier:
-  Enabled: true
-Style/EmptyElse:
-  Enabled: true
-Style/HashSyntax:
-  Enabled: true
-Style/MethodCallWithoutArgsParentheses:
-  Enabled: true
-Style/Next:
-  Enabled: false
+    - 'lib/**'
+    - 'tmp/**/*'
+  TargetRubyVersion: 2.7
+  SuggestExtensions: false

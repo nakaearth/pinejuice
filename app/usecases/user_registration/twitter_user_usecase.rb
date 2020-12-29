@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserRegistration
   class TwitterUserUsecase
     class << self
@@ -13,9 +15,9 @@ module UserRegistration
             user.access_token = credentials[:token]
             user.secret_token = credentials[:secret]
           end
-        rescue
+        rescue StandardError
           raise UserRegistrationError.new('Twitterのユーザ登録に失敗しました。', 'user_registration_error')
-        end 
+        end
       end
     end
   end

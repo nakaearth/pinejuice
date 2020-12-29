@@ -46,6 +46,7 @@ services:
       - ./config.ru:/pinejuice/config.ru
       - ./db:/pinejuice/db
       - ./.rubocop.yml:/pinejuice/.rubocop.yml
+      - ./.rubocop_todo.yml:/pinejuice/.rubocop_todo.yml
       - ./Gemfile:/pinejuice/Gemfile
       - ./Gemfile.lock:/pinejuice/Gemfile.lock
       - ./lib:/pinejuice/lib

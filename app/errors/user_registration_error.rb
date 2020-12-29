@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserRegistrationError < StandardError
   attr_reader :error_type
 
