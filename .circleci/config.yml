@@ -1,0 +1,113 @@
+version: 2.1
+
+executors:
+  backend-ruby-executor:
+    docker:
+      - image: circleci/ruby:2.7.2
+
+  backend-rails-executor:
+    docker:
+      - image: circleci/ruby:2.7.2
+        environment:
+          RAILS_ENV: test
+      - image: circleci/mysql:5.7
+      - image: circleci/elasticsearch:7.9.0
+
+commands:
+  install_ruby_dependencies:
+    steps:
+      - restore_cache:
+        name: Restore gem cache
+        keys:
+          - pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: gem install bundler
+          command: gem install bundler
+      - run:
+          name: bundle install
+          command: bundle install --path vendor/bundle --jobs=4 --retry=3
+      - run:
+          name: bundle clean
+          command: bundle clean
+      - save_cache:
+          name: save gem cache
+          key: pinejuice-gem-bundle-{{ chceksum "Gemfile.lock" }}
+          path:
+            - vendor/bundle
+  set_test_environment_file:
+    steps:
+      - run:
+          name: create test environment file
+          command: cp dotenv.test .env.test
+  db_migrate:
+    steps:
+      - run:
+          name: db migrate
+          command: bundle exec rails db:create db:migrate
+  wait_mysql_up:
+    steps:
+      - run:
+          name: Wait for mysql up
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m -wait-retry-interval 5s
+
+jobs:
+  backend_bundle_install:
+    executor: backend-ruby-executor
+    steps:
+      - checkout
+      - install_ruby_dependencies
+
+  backend_test:
+    parallelism: 4
+    executor: backend-rails-executor
+    steps:
+      - checkout
+      - install_ruby_dependencies
+      - set_test_environment_file
+      - wait_mysql_up
+      - db_migrate
+      - run: mkdir test-results
+      - run:
+          name: Run test
+          command: |
+            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            echo ${TESTFILES}
+            bundle exec rspec --profile 10 --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml -- ${TESTFILES}
+      - store_test_result:
+          path: test-results
+      - store-artifacts:
+          path: coverage
+      - run:
+          name: Stash Coverage Results
+          command: |
+            mkdir -p backend_coverage
+            cp -R coverage/.resultset.json backend_coverage/.resultset-${CIRCLE_NODE_INDEX}.json
+            #      - persist_to_workspace:
+            #          root: .
+            #          paths:
+                       # - backend_coverage
+
+  backend_rubocop:
+    executor: backend-ruby-executor
+    steps:
+      - checkout:
+      - install_ruby_dependencies
+      - run:
+          name: Run rubocop
+          command: bundle exec rubocop --parallel
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - backend_bundle_install:
+          filters:
+            branches:
+              - release
+
+      - backend_test:
+          requires:
+            - backend_bundle_install
+      - backend_rubocop:
+          requires:
+            - backend_bundle_install
