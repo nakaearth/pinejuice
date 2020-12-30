@@ -17,9 +17,9 @@ commands:
   install_ruby_dependencies:
     steps:
       - restore_cache:
-        name: Restore gem cache
-        keys:
-          - pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
+          name: Restore gem cache
+          keys:
+            - pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: gem install bundler
           command: gem install bundler:2.2.2
@@ -32,7 +32,7 @@ commands:
       - save_cache:
           name: save gem cache
           key: pinejuice-gem-bundle-{{ chceksum "Gemfile.lock" }}
-          path:
+          paths:
             - vendor/bundle
   set_test_environment_file:
     steps:
