@@ -17,9 +17,9 @@ commands:
   install_ruby_dependencies:
     steps:
       - restore_cache:
-        name: Restore gem cache
-        keys:
-          - pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
+          name: Restore gem cache
+          keys:
+            - pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: gem install bundler
           command: gem install bundler:2.2.2
@@ -32,7 +32,7 @@ commands:
       - save_cache:
           name: save gem cache
           key: pinejuice-gem-bundle-{{ chceksum "Gemfile.lock" }}
-          path:
+          paths:
             - vendor/bundle
   set_test_environment_file:
     steps:
@@ -73,9 +73,9 @@ jobs:
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
             bundle exec rspec --profile 10 --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml -- ${TESTFILES}
-      - store_test_result:
+      - store_test_results:
           path: test-results
-      - store-artifacts:
+      - store_artifacts:
           path: coverage
       - run:
           name: Stash Coverage Results
@@ -90,7 +90,7 @@ jobs:
   backend_rubocop:
     executor: backend-ruby-executor
     steps:
-      - checkout:
+      - checkout
       - install_ruby_dependencies
       - run:
           name: Run rubocop
@@ -103,7 +103,8 @@ workflows:
       - backend_bundle_install:
           filters:
             branches:
-              - release
+              ignore:
+                - release
 
       - backend_test:
           requires:
