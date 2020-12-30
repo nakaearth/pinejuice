@@ -22,7 +22,7 @@ commands:
           - pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: gem install bundler
-          command: gem install bundler
+          command: gem install bundler:2.2.2
       - run:
           name: bundle install
           command: bundle install --path vendor/bundle --jobs=4 --retry=3
