@@ -31,7 +31,7 @@ commands:
           command: bundle clean
       - save_cache:
           name: save gem cache
-          key: pinejuice-gem-bundle-{{ chceksum "Gemfile.lock" }}
+          key: pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
   set_test_environment_file:
