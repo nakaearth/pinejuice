@@ -23,7 +23,8 @@ class SessionsController < ApplicationController
     @current_user_json = 
       {
          encrypted_user_id: Base64.encode64(user.id.to_s),
-         user: user
+         name: user.name,
+         nickname: user
       } 
   end
 
