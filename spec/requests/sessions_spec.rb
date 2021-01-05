@@ -12,7 +12,28 @@ describe 'Sessions', type: :request do
 
   describe '#create' do
     context '新規登録でログイン先から返却値に正しく値が入っている場合' do
+      let(:params) do
+        {
+          provider: 'twitter',
+          uid: '12345667',
+          info: {
+            email: 'test@gamil',
+            name: 'テスト太郎',
+            nickname: 'jbloggs',
+            image: 'http://graph.facebook.com/1234567/picture?type=square'
+          },
+          credentials: {
+            token: 'ABCDEF...',
+            secret: '123ABCDEF...'
+          }
+        }
+      end
+
       it 'ユーザが登録される' do
+        post '/auth/twitter/callback', params: params
+
+        result = JSON.parse(response.body, { :symbolize_names => true })
+        expect(result['name']).to eq 'テスト太郎'
       end
     end
 

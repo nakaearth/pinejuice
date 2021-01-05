@@ -20,12 +20,12 @@ class SessionsController < ApplicationController
         image_url: form.image_url,
         credentials: { secret: form.secret, token: form.token }
       )
-    @current_user_json = 
+    @current_user_json =
       {
          encrypted_user_id: Base64.encode64(user.id.to_s),
          name: user.name,
          nickname: user
-      } 
+      }
   end
 
   def destroy
