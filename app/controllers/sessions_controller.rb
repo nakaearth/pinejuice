@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
   def create
     auth_params = request.env['omniauth.auth']
-    form = UserRistrationForm.new(auth_params)
+    form = UserRegistrationForm.new(auth_params)
     user =
       User.find_by(provider: form.provider, email: form.name) ||
       UserRegistration::TwitterUserUsecase.call(

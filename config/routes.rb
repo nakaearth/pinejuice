@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # twitter login
   get "/:provider/login"  => "sessions#new"
   get "/logout" => "sessions#destroy"
-  get "/auth/:provider/callback" => "sessions#create" unless Rails.env.development?
-  post "/auth/:provider/callback" => "sessions#create" if Rails.env.development?
+  get "/auth/twitter/callback" => "sessions#create" unless Rails.env.development?
+  post "/auth/twitter/callback" => "sessions#create" if Rails.env.development?
   get "/auth/failure" => "sessions#failuer"
 end

@@ -10,27 +10,35 @@ describe 'Sessions', type: :request do
     travel_to(now) { e.run }
   end
 
+  before do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return({
+      encrypted_user_id: Base64.encode64(user.id.to_s)
+    })
+  end
+
   describe '#create' do
     context '新規登録でログイン先から返却値に正しく値が入っている場合' do
       let(:params) do
         {
-          provider: 'twitter',
-          uid: '12345667',
-          info: {
-            email: 'test@gamil',
-            name: 'テスト太郎',
-            nickname: 'jbloggs',
-            image: 'http://graph.facebook.com/1234567/picture?type=square'
-          },
-          credentials: {
-            token: 'ABCDEF...',
-            secret: '123ABCDEF...'
+          'omniauth.auth' => {
+             provider: 'twitter',
+             uid: '12345667',
+             info: {
+               email: 'test@gamil',
+               name: 'テスト太郎',
+               nickname: 'jbloggs',
+               image: 'http://graph.facebook.com/1234567/picture?type=square'
+             },
+             credentials: {
+               token: 'ABCDEF...',
+               secret: '123ABCDEF...'
+             }
           }
         }
       end
 
       it 'ユーザが登録される' do
-        post '/auth/twitter/callback', params: params
+        get '/auth/twitter/callback', params: params
 
         result = JSON.parse(response.body, { :symbolize_names => true })
         expect(result['name']).to eq 'テスト太郎'
