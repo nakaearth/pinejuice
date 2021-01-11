@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_23_164808) do
+ActiveRecord::Schema.define(version: 2021_01_11_020121) do
+
+  create_table "tickets", charset: "utf8mb4", force: :cascade do |t|
+    t.string "title", limit: 80, null: false
+    t.string "description", limit: 1024, null: false
+    t.integer "point", default: 0
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tickets_on_user_id"
+  end
 
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", limit: 80, null: false
