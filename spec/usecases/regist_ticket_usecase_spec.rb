@@ -8,7 +8,6 @@ RSpec.describe RegistTicketUsecase do
 
     context '正しくパラメータが渡ってきた場合' do
       it 'チケット登録が正しく行われる' do
-
         RegistTicketUsecase.execute(current_user: user,
                                     title: '今日のサーバ負荷調査',
                                     description: '朝の負荷状況を調べて共有します',
@@ -17,6 +16,16 @@ RSpec.describe RegistTicketUsecase do
         registed_tickets = Ticket.where(user: user).order('id desc')
         expect(registed_tickets.size).to eq 1
         expect(registed_tickets.first.title).to eq '今日のサーバ負荷調査'
+      end
+    end
+
+    context 'エラーが発生した場合' do
+      it '例外をraiseする' do
+          expect{ RegistTicketUsecase.execute(current_user: user,
+                     title: nil,
+                     description: '朝の負荷状況を調べて共有します',
+                     point: 5)
+                 }.to  raise_error(RegistTicketError)
       end
     end
   end
