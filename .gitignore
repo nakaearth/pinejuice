@@ -4,6 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+# Ignore node_modules
+/client/node_modules/*
+
 # Ignore bundler config.
 /.bundle
 /vendor/*
@@ -16,7 +19,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-/client/node_modules/*
+
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
