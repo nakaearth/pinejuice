@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module QueryBuilder
+module Search
   class StorySearch
     class << self
       def call(search_conditions, page_num: 0)
