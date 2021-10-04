@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
-module Search
-  class StorySearch
-    class << self
-      def call(search_conditions, page_num: 0)
+class TicketSearchGateway
+  class << self
+    def call(search_params)
+      result_record = ElasticsearchClient.client.search(query(search_conditions: search_params))
+    end
+
+    private
+
+    def query call(search_conditions: search_conditions, page_num: 0)
         {
           query: {
             function_score: {

@@ -1,4 +1,4 @@
-module QueryBuilder
+module Query
   class AndQueryString
     KEYWORD = 'keyword'
     TERM = 'term'
