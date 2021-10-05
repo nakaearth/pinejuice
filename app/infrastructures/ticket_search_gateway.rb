@@ -2,13 +2,13 @@
 
 class TicketSearchGateway
   class << self
-    def call(search_params)
-      result_record = ElasticsearchClient.client.search(query(search_conditions: search_params))
+    def call(user_id: user_id, keyword: keyword)
+      result_record = ElasticsearchClient.client.search(query(user_id, keyword))
     end
 
     private
 
-    def query call(search_conditions: search_conditions, page_num: 0)
+    def query call(user_id, keyword)
         {
           query: {
             function_score: {
@@ -16,7 +16,10 @@ class TicketSearchGateway
               boost_mode: 'multiply', # クエリの合計スコアとfunctionのスコアの計算方法
               query: {
                 bool: {
-                  must: QueryBuilder::AndQueryString.and_queries(search_conditions),
+                  must: [
+                    Query::FunctionQuery.match_query('user_id', user_id),
+                    Query::FunctionQuery.full_text_query(['title^10', 'title2^3', 'description^8', 'description2^3'], keyword),
+                  ],
                 }
               },
               functions: [
@@ -50,7 +53,7 @@ class TicketSearchGateway
           #     }
           #   }
           },
-          from: page_num,
+          from: 50,
           size: 10,
           sort: { id: { order: 'desc' } }
         }.to_json
