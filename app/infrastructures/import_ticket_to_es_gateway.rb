@@ -1,18 +1,43 @@
 # frozen_string_literal: true
-module Search
-  class AlbumToElasticsearchInsertGateway < BaseSearchInfrastructure
-    class << self
-      def bulk(index_name)
-        Elasticsearch::Model.client = client_connection
-        Album.find_in_batches.with_index do |entries, _i|
-          Elasticsearch::Model.client.bulk(
-            index: index_name,
-            type: '_doc',
-            body: entries.map { |entry| { index: { _id: entry.id, data: entry.as_indexed_json } } },
-            refresh: true, # NOTE: 定期的にrefreshしないとEsが重くなる
-          )
-        end
+
+class ImportTicketToEsGateway
+  class << self
+    def bulk_import(ticket_ids: nil) 
+      # Elasticsearchへの
+      config = YAML.load_file(Rails.root.join('config/elasticsearch.yml'))[ENV['RAILS_ENV'] || 'development']
+      client = Elasticsearch::Client.new(host: config['host'])
+
+      if ticket_ids.nil 
+        all_tickets =
+          Ticket.eager_load(:user).all
+      else
+        all_tickets = Ticket.eager_load(:user).where(id: ticket_ids)
+      end
+      # bulkで入れる
+      all_tickets.find_in_batches(batch_size: 500).with_index do |tickets, i|
+        client.bulk(
+          index: 'es_tickets',
+          type: '_doc',
+          body: tickets.map { |ticket| { index: { _id: ticket.id, data: as_indexed_json(ticket) } } },
+          refresh: (i > 0 && i % 3 == 0), # NOTE: 定期的にrefreshしないとEsが重くなる
+        )
       end
     end
+  end
+
+  private
+
+  def as_indexed_json(ticket)
+    {
+       id: ticekt.id,
+       title: ticket.title,
+       title2: ticket.title,
+       description: ticket.description,
+       description2: ticket.description,
+       point: ticket.point,
+       creator_name: ticket.user.name,
+       created_at: ticket.created_at,
+       updated_at: ticket.updated_at 
+    }.to_json
   end
 end

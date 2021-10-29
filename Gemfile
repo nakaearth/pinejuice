@@ -70,6 +70,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'dotenv-rails'
 
-gem 'elasticsearch-rails', '~> 6'
+# gem 'elasticsearch-api', git: 'https://github.com/elastic/elasticsearch-ruby.git'
+gem 'elasticsearch'
 
 gem 'jb'
