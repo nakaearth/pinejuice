@@ -6,8 +6,8 @@ class TicketSearchGateway
       config = YAML.load_file(Rails.root.join('config/elasticsearch.yml'))[ENV['RAILS_ENV'] || 'development']
       client  = Elasticsearch::Client.new(host: config['host'])
       query =  query(user_id, keyword)
-      result_record = client.search(index: 'es_tickets', body: query)
-      result_record
+      result = client.search(index: 'es_tickets', body: query)
+      { entries: result['hits']['hits'], total_count: result['hits']['total']['value']}
     end
 
     private
@@ -16,8 +16,6 @@ class TicketSearchGateway
       {
         query: {
           function_score: {
-            score_mode: 'sum', # functionsないのスコアの計算方法
-            boost_mode: 'multiply', # クエリの合計スコアとfunctionのスコアの計算方法
             query: {
               bool: {
                 must: [
@@ -26,6 +24,7 @@ class TicketSearchGateway
                 ],
               }
             },
+            boost: 5, 
             functions: [
               {
                 field_value_factor: {
@@ -45,19 +44,13 @@ class TicketSearchGateway
                 },
                 weight: 2
               }
-            ]
-        # TODO: aggregationを設定する
-        # aggs: {
-        #   tag: {
-        #     terms: {
-        #       field: 'tag_name',
-        #       size: 50
-        #     }
-        #   }
+            ],
+            score_mode: 'sum', # functionsないのスコアの計算方法
+            boost_mode: 'multiply', # クエリの合計スコアとfunctionのスコアの計算方法
           },
-          from: 50,
-          size: 10,
-          sort: { id: { order: 'desc' } }
+          #from: 50,
+          #size: 10,
+          #sort: { id: { order: 'desc' } }
         }
       }.to_json
     end

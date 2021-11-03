@@ -15,7 +15,7 @@ RSpec.describe TicketSearchGateway do
         ImportTicketToEsGateway.bulk_import(ticket_ids: [ticket.id, ticket2.id, ticket3.id])
 
         result = TicketSearchGateway.call(user_id: user.id, keyword: '開発')
-        expect(results[:result_records][0].id).to eq ticket.id
+        expect(result[:entries][0].id).to eq ticket.id
       end
     end
 #    before do
