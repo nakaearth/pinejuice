@@ -115,7 +115,9 @@ class SetupIndexElasticsearchGateway
       client = Elasticsearch::Client.new(host: config['host'])
       # mapping/indexの作成
       index_name = 'es_tickets'
-      client.indices.delete(index: index_name) if override
+      if override
+        client.indices.delete(index: index_name) if client.indices.exists(index: index_name)
+      end
       client.indices.create(index: index_name,
                             body: {
                               settings: SETTINGS,

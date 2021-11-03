@@ -7,7 +7,7 @@ class ImportTicketToEsGateway
       config = YAML.load_file(Rails.root.join('config/elasticsearch.yml'))[ENV['RAILS_ENV'] || 'development']
       client = Elasticsearch::Client.new(host: config['host'])
 
-      if ticket_ids.nil 
+      if ticket_ids.nil? 
         all_tickets =
           Ticket.eager_load(:user).all
       else
@@ -23,21 +23,21 @@ class ImportTicketToEsGateway
         )
       end
     end
-  end
 
-  private
-
-  def as_indexed_json(ticket)
-    {
-       id: ticekt.id,
-       title: ticket.title,
-       title2: ticket.title,
-       description: ticket.description,
-       description2: ticket.description,
-       point: ticket.point,
-       creator_name: ticket.user.name,
-       created_at: ticket.created_at,
-       updated_at: ticket.updated_at 
-    }.to_json
+    private
+  
+    def as_indexed_json(ticket)
+      {
+         id: ticket.id,
+         title: ticket.title,
+         title2: ticket.title,
+         description: ticket.description,
+         description2: ticket.description,
+         point: ticket.point,
+         creator_name: ticket.user.name,
+         created_at: ticket.created_at,
+         updated_at: ticket.updated_at 
+      }.to_json
+    end
   end
 end

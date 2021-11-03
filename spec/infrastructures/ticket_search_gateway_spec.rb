@@ -5,10 +5,15 @@ require 'rails_helper'
 RSpec.describe TicketSearchGateway do
   describe '.call' do
     let(:user) { create(:user) }
-    let(:ticket) { create(:ticket, title: '開発チケット', description: 'これはテストチケットです。¥n開発ようです', point: 5, user: user) }
+    let(:ticket) { create(:ticket, title: '開発チケット', description: 'これは開発タスクのチケットです。¥n開発ようです', point: 5, user: user) }
+    let(:ticket2) { create(:ticket, title: 'QAチケット', description: 'これはQAのチケットです。¥n開発ようです', point: 1, user: user) }
+    let(:ticket3) { create(:ticket, title: '企画チケット', description: 'これは企画関係のチケットです。¥n開発ようです', point: 10, user: user) }
 
     describe 'キーワード指定の検索' do
       it 'タイトル中のワードで検索ができる' do
+        SetupIndexElasticsearchGateway.create_index(override: true)
+        ImportTicketToEsGateway.bulk_import(ticket_ids: [ticket.id, ticket2.id, ticket3.id])
+
         result = TicketSearchGateway.call(user_id: user.id, keyword: '開発')
         expect(results[:result_records][0].id).to eq ticket.id
       end

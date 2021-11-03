@@ -29,7 +29,7 @@ class TicketSearchGateway
             functions: [
               {
                 field_value_factor: {
-                  field: "likes",
+                  field: "point",
                   factor: 2,
                   modifier: "square",
                   missing: 1
