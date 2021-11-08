@@ -14,12 +14,12 @@ class ImportTicketToEsGateway
         all_tickets = Ticket.eager_load(:user).where(id: ticket_ids)
       end
       # bulkで入れる
-      all_tickets.find_in_batches(batch_size: 500).with_index do |tickets, i|
+      all_tickets.find_in_batches(batch_size: 500) do |tickets|
         client.bulk(
           index: 'es_tickets',
           type: '_doc',
           body: tickets.map { |ticket| { index: { _id: ticket.id, data: as_indexed_json(ticket) } } },
-          refresh: (i > 0 && i % 3 == 0), # NOTE: 定期的にrefreshしないとEsが重くなる
+          refresh: true,
         )
       end
     end

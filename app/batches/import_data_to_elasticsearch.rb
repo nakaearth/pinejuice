@@ -3,13 +3,10 @@ require 'optparse'
 
 # 1) 新規にindexを作成/データのimportをする場合
 # bundle exec rails runner ImportDataToElasticsearch.execute
-# 2) 既にindexがあって、再構築する場合
-# bundle exec rails runner ImportDataToElasticsearch.execute --force=true
-#
 class ImportDataToElasticsearch
   class << self
     def execute
-      logger = ActiveSupport::Logger.new("import_data_to_elasticsearch_batch.log", 'daily')
+      logger = ActiveSupport::Logger.new("log/import_data_to_elasticsearch_batch.log")
 
       # importする
       logger.info('========= データ登録 =========')
