@@ -98,6 +98,9 @@ class SetupIndexElasticsearchGateway
           type: 'date',
           format: 'strict_date_optional_time||epoch_millis',
         },
+        user_id: {
+          type: 'long'
+        },
         creator_name: {
           type: 'text',
           fields: {

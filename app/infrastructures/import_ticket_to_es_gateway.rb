@@ -17,9 +17,8 @@ class ImportTicketToEsGateway
       all_tickets.find_in_batches(batch_size: 500) do |tickets|
         client.bulk(
           index: 'es_tickets',
-          type: '_doc',
-          body: tickets.map { |ticket| { index: { _id: ticket.id, data: as_indexed_json(ticket) } } },
-          refresh: true,
+          body: tickets.map { |ticket| { index: { _id: ticket.id, data: JSON.parse(as_indexed_json(ticket)) } } },
+          refresh: 'true'
         )
       end
     end
@@ -34,6 +33,7 @@ class ImportTicketToEsGateway
          description: ticket.description,
          description2: ticket.description,
          point: ticket.point,
+         user_id: ticket.user.id,
          creator_name: ticket.user.name,
          created_at: ticket.created_at,
          updated_at: ticket.updated_at 

@@ -14,8 +14,10 @@ RSpec.describe TicketSearchGateway do
         SetupIndexElasticsearchGateway.create_index(override: true)
         ImportTicketToEsGateway.bulk_import(ticket_ids: [ticket.id, ticket2.id, ticket3.id])
 
-        result = TicketSearchGateway.call(user_id: user.id, keyword: '開発')
-        expect(result[:entries][0].id).to eq ticket.id
+        result = TicketSearchGateway.call(user_id: user.id, keyword: 'チケット')
+        expect([ticket.id, ticket2.id, ticket3.id].include?(result[:entries][0]['id'])).to eq true
+        expect([ticket.id, ticket2.id, ticket3.id].include?(result[:entries][1]['id'])).to eq true
+        expect([ticket.id, ticket2.id, ticket3.id].include?(result[:entries][2]['id'])).to eq true
       end
     end
 #    before do

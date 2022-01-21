@@ -6,8 +6,10 @@ class TicketSearchGateway
       config = YAML.load_file(Rails.root.join('config/elasticsearch.yml'))[ENV['RAILS_ENV'] || 'development']
       client  = Elasticsearch::Client.new(host: config['host'])
       query =  query(user_id, keyword)
-      result = client.search(index: 'es_tickets', body: query)
-      { entries: result['hits']['hits'], total_count: result['hits']['total']['value']}
+      response = client.search(index: 'es_tickets', body: query)
+
+      { entries: response['hits']['hits'].map{ |r_hash| r_hash['_source'] },
+       total_count: response['hits']['total']['value']}
     end
 
     private
