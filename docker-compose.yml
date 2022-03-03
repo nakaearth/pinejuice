@@ -26,6 +26,13 @@ services:
       - 9200:9200
       - 9300:9300
 
+  logstash:
+    build:
+      context: docker_image/logstash
+    container_name: logstash
+    depends_on:
+      - elasticsearch
+
   headPlugin:
     image: 'mobz/elasticsearch-head:7'
     container_name: head
