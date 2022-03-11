@@ -4,4 +4,4 @@ RUN rm -rf /usr/share/logstash/config
 RUN rm -rf /usr/share/logstash/pipeline
 COPY pipeline /usr/share/logstash/pipeline
 COPY config /usr/share/logstash/config
-COPY mysql-connector-java-8.0.17.jar /usr/share/logstash/mysql-connector-java-8.0.17.jar
+COPY mysql-connector-8.0.17.jar /usr/share/logstash/mysql-connector-8.0.17.jar
