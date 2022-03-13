@@ -32,14 +32,6 @@ services:
     container_name: logstash
     env_file:
       - ./environments/db.env
-    depends_on:
-      - elasticsearch
-
-  headPlugin:
-    image: 'mobz/elasticsearch-head:7'
-    container_name: head
-    ports:
-      - '9100:9100'
 
   app:
     build:
@@ -72,6 +64,7 @@ services:
     links:
       - db
       - elasticsearch
+      - logstash
 
 volumes:
   db_data:
