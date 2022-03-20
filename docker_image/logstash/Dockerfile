@@ -1,7 +1,7 @@
 FROM docker.elastic.co/logstash/logstash:7.10.1
 
-RUN rm -rf /usr/share/logstash/config
-RUN rm -rf /usr/share/logstash/pipeline
-COPY config /usr/share/logstash/config
-COPY pipeline /usr/share/logstash/pipeline
-COPY mysql-connector-8.0.17.jar /usr/share/logstash/mysql-connector-8.0.17.jar
+RUN rm -rf logstash/config
+RUN rm -rf logstash/pipeline
+COPY config logstash/config
+COPY pipeline logstash/pipeline
+COPY mysql-connector-java-8.0.17.jar logstash/mysql-connector-java-8.0.17.jar

@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2021_01_11_020121) do
 
-  create_table "tickets", charset: "utf8mb4", force: :cascade do |t|
+  create_table "tickets", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "title", limit: 80, null: false
     t.string "description", limit: 1024, null: false
     t.integer "point", default: 0
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_020121) do
     t.index ["user_id"], name: "index_tickets_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", limit: 80, null: false
     t.string "email", null: false
     t.string "provider", limit: 30, null: false
