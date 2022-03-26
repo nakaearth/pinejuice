@@ -1,7 +1,8 @@
 FROM docker.elastic.co/logstash/logstash:7.10.1
-
 RUN rm -rf logstash/config
 RUN rm -rf logstash/pipeline
-COPY config logstash/config
-COPY pipeline logstash/pipeline
-COPY mysql-connector-java-8.0.17.jar logstash/mysql-connector-java-8.0.17.jar
+COPY --chmod=755 config /user/share/logstash/config
+COPY --chmod=755 pipeline /user/share/logstash/pipelin
+COPY --chmod=755 mysql-connector-java-8.0.17.jar /user/share/logstash/mysql-connector-java-8.0.17.jar
+# RUN bin/logstash-plugin install logstash-output-elasticsearch
+# RUN bin/logstash-plugin install logstash-integration-jdbc

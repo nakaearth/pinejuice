@@ -29,8 +29,14 @@ services:
     build:
       context: docker_image/logstash
     container_name: logstash
+    ports: ['9600:9600']
     env_file:
       - ./environments/db.env
+    volumes:
+      - ./docker_image/logstash/pipeline/tickets_jdbc.conf:/usr/share/logstash/pipeline/tickets_jdbc.conf
+    links:
+      - db
+      - elasticsearch
 
   app:
     build:
