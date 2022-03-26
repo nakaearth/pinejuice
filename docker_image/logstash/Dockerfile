@@ -1,4 +1,4 @@
-FROM docker.elastic.co/logstash/logstash:7.10.1
+FROM docker.elastic.co/logstash/logstash:7.17.1
 RUN rm -rf logstash/config
 RUN rm -rf logstash/pipeline
 COPY --chmod=755 config /user/share/logstash/config
