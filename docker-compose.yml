@@ -69,7 +69,6 @@ services:
     links:
       - db
       - elasticsearch
-      - logstash
 
 volumes:
   db_data:
