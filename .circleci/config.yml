@@ -3,15 +3,15 @@ version: 2.1
 executors:
   backend-ruby-executor:
     docker:
-      - image: circleci/ruby:2.7.2
+      - image: circleci/ruby:2.7.5
 
   backend-rails-executor:
     docker:
-      - image: circleci/ruby:2.7.2
+      - image: circleci/ruby:2.7.5
         environment:
           RAILS_ENV: test
-      - image: circleci/mysql:5.7
-      - image: circleci/elasticsearch:7.9.0
+      - image: circleci/mysql:8.0
+      - image: circleci/elasticsearch:7.10.7
 
 commands:
   install_ruby_dependencies:
