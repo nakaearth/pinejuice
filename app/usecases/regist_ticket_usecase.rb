@@ -3,14 +3,14 @@
 class RegistTicketUsecase
   class << self
     def execute(current_user:, title:, description:, point:)
-      ticket = ActiveRecord::Base.transaction do
+      ActiveRecord::Base.transaction do
         Ticket.create!(
           title: title,
           description: description,
           point: point,
           user: current_user
         )
-      rescue
+      rescue StandardError
         raise RegistTicketError.new('チケット登録に失敗しました。', 'regist_ticket_error')
       end
 

@@ -1,19 +1,26 @@
 # Offense count: 10
 Metrics/AbcSize:
-  Max: 17
+  Max: 20
 
 # Offense count: 4
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 173
+  Max: 180
 
 # Offense count: 26
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/MethodLength:
-  Max: 14
+  Max: 30
 
-Style/Documentation:
+Metrics/BlockLength:
   Enabled: false
 
 Metrics/ParameterLists:
   Max: 8
+
+Style/Documentation:
+  Enabled: false
+
+# 日本語のコメントを許可する
+Style/AsciiComments:
+  Enabled: false

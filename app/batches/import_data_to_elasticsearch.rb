@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'optparse'
 
 # 1) 新規にindexを作成/データのimportをする場合
@@ -6,7 +7,7 @@ require 'optparse'
 class ImportDataToElasticsearch
   class << self
     def execute
-      logger = ActiveSupport::Logger.new("log/import_data_to_elasticsearch_batch.log")
+      logger = ActiveSupport::Logger.new('log/import_data_to_elasticsearch_batch.log')
 
       # importする
       logger.info('========= データ登録 =========')

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_many :tickets
+  has_many :tickets, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 60 }
   validates :uid, presence: true

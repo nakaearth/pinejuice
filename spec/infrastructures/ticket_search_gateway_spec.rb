@@ -6,11 +6,13 @@ RSpec.describe TicketSearchGateway do
   describe '.call' do
     let(:user) { create(:user) }
 
-    describe 'キーワード指定の検索' do 
+    describe 'キーワード指定の検索' do
       context '単純なワード検索の場合' do
         let(:ticket) { create(:ticket, title: '開発チケット', description: 'これは開発タスクのチケットです。¥n開発ようです', point: 5, user: user) }
         let(:ticket2) { create(:ticket, title: 'QAチケット', description: 'これはQAのチケットです。¥n開発ようです', point: 1, user: user) }
-        let(:ticket3) { create(:ticket, title: '企画チケット', description: 'これは企画関係のチケットです。¥n開発ようです', point: 10, user: user) }
+        let(:ticket3) do
+          create(:ticket, title: '企画チケット', description: 'これは企画関係のチケットです。¥n開発ようです', point: 10, user: user)
+        end
 
         it 'タイトル中のワードで検索ができる' do
           SetupIndexElasticsearchGateway.create_index(override: true)
@@ -22,7 +24,7 @@ RSpec.describe TicketSearchGateway do
           expect(result_ids.include?(ticket2.id)).to eq true
           expect(result_ids.include?(ticket3.id)).to eq true
         end
-        
+
         it 'タイトル中の特定のワードで検索ができる' do
           SetupIndexElasticsearchGateway.create_index(override: true)
           ImportTicketToEsGateway.bulk_import(ticket_ids: [ticket.id, ticket2.id, ticket3.id])
@@ -33,9 +35,15 @@ RSpec.describe TicketSearchGateway do
       end
 
       context '辞書に載っていないようなキーワードで検索した場合' do
-        let(:ticket) { create(:ticket, title: 'ホゲホゲチケット', description: 'これはホゲホゲ開発に関するチケットです。¥n開発ようです', point: 5, user: user) }
-        let(:ticket2) { create(:ticket, title: 'ウガウガQAチケット', description: 'これはQAのチケットです。¥n開発ようです', point: 1, user: user) }
-        let(:ticket3) { create(:ticket, title: '企画フガフガチケット', description: 'これはホゲホゲ企画のフガに関係するチケットです。¥n開発ようです', point: 10, user: user) }
+        let(:ticket) do
+          create(:ticket, title: 'ホゲホゲチケット', description: 'これはホゲホゲ開発に関するチケットです。¥n開発ようです', point: 5, user: user)
+        end
+        let(:ticket2) do
+          create(:ticket, title: 'ウガウガQAチケット', description: 'これはQAのチケットです。¥n開発ようです', point: 1, user: user)
+        end
+        let(:ticket3) do
+          create(:ticket, title: '企画フガフガチケット', description: 'これはホゲホゲ企画のフガに関係するチケットです。¥n開発ようです', point: 10, user: user)
+        end
 
         it 'タイトル中のワードで検索ができる' do
           SetupIndexElasticsearchGateway.create_index(override: true)

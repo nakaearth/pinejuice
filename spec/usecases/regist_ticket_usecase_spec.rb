@@ -21,11 +21,12 @@ RSpec.describe RegistTicketUsecase do
 
     context 'エラーが発生した場合' do
       it '例外をraiseする' do
-          expect{ RegistTicketUsecase.execute(current_user: user,
-                     title: nil,
-                     description: '朝の負荷状況を調べて共有します',
-                     point: 5)
-                 }.to  raise_error(RegistTicketError)
+        expect do
+          RegistTicketUsecase.execute(current_user: user,
+                                      title: nil,
+                                      description: '朝の負荷状況を調べて共有します',
+                                      point: 5)
+        end.to raise_error(RegistTicketError)
       end
     end
   end

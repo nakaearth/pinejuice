@@ -30,7 +30,7 @@ RSpec.describe UserRegistration::TwitterUserUsecase do
           credentials: { token: params[:credentials][:token],
                          secret: params[:credentials][:secret] }
         )
- 
+
         expect(user.provider).to eq params[:provider]
         expect(user.name).to eq params[:name]
         expect(user.email).to eq params[:email]
@@ -44,28 +44,30 @@ RSpec.describe UserRegistration::TwitterUserUsecase do
     context '不正なパラメータ(emailがない、uidが空)が渡って来た場合' do
       let(:params) do
         {
-           provider: 'twitter',
-           uid: '',
-           name: 'テスト太郎',
-           nickname: 'jbloggs',
-           image_url: 'http://graph.facebook.com/1234567/picture?type=square',
-           credentials: {
-             token: 'ABCDEF...', # OAuth 2.0 access_token, which you may wish to store
-             secret: '123ABCDEF...' # OAuth 2.0 access_token, which you may wish to store
-           }
+          provider: 'twitter',
+          uid: '',
+          name: 'テスト太郎',
+          nickname: 'jbloggs',
+          image_url: 'http://graph.facebook.com/1234567/picture?type=square',
+          credentials: {
+            token: 'ABCDEF...', # OAuth 2.0 access_token, which you may wish to store
+            secret: '123ABCDEF...' # OAuth 2.0 access_token, which you may wish to store
+          }
         }
       end
 
       it '例外を出力する' do
-         expect{ UserRegistration::TwitterUserUsecase.execute(
-          email: params[:email],
-          name: params[:name],
-          uid: params[:uid],
-          nickname: params[:nickname],
-          image_url: params[:image_url],
-          credentials: { token: params[:credentials][:token],
-                         secret: params[:credentials][:secret] }
-        )}.to raise_error(UserRegistrationError, 'Twitterのユーザ登録に失敗しました。')
+        expect do
+          UserRegistration::TwitterUserUsecase.execute(
+            email: params[:email],
+            name: params[:name],
+            uid: params[:uid],
+            nickname: params[:nickname],
+            image_url: params[:image_url],
+            credentials: { token: params[:credentials][:token],
+                           secret: params[:credentials][:secret] }
+          )
+        end.to raise_error(UserRegistrationError, 'Twitterのユーザ登録に失敗しました。')
       end
     end
   end
