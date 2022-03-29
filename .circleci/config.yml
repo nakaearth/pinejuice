@@ -94,7 +94,7 @@ jobs:
       - install_ruby_dependencies
       - run:
           name: Run rubocop
-          command: bundle exec rubocop --parallel
+          command: bundle exec rubocop app/ spec/ --parallel
 
 workflows:
   version: 2
