@@ -78,9 +78,7 @@ jobs:
       - run:
           name: Run test
           command: |
-            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-            echo ${TESTFILES}
-            bundle exec rspec -t ~ci --profile 10 --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml -- ${TESTFILES}
+            bundle exec rspec -t ci --profile 10
       - store_test_results:
           path: test-results
       - store_artifacts:
