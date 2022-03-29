@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UserRegistration::TwitterUserUsecase do
+RSpec.describe UserRegistration::TwitterUserUsecase, ci: true do
   describe '.call' do
     context 'paramsの値をusersテーブルに登録する値が渡って来た場合' do
       let(:params) do

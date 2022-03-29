@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Sessions', type: :request do
+describe 'Sessions', type: :request, ci: true do
   let(:user) { create(:user) }
   let(:now) { Time.zone.strptime('2021-01-01', '%F') }
 

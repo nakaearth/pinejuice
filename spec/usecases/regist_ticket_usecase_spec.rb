@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RegistTicketUsecase do
+RSpec.describe RegistTicketUsecase, ci: true do
   describe '.execute' do
     let(:user) { create(:user, provider: 'twitter', email: 'hoge@gmail.com', name: 'ホゲ太郎') }
 
