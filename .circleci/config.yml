@@ -38,7 +38,7 @@ commands:
     steps:
       - run:
           name: create test environment file
-          command: cp dotenv.test .env.test
+          command: cp .env.sample .env.test
   db_migrate:
     steps:
       - run:
