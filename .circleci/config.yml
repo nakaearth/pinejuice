@@ -11,8 +11,19 @@ executors:
         environment:
           RAILS_ENV: test
       - image: circleci/mysql:8.0
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.17.1 
-
+      - build:
+          context: docker_image/elasticsearch
+          container_name: elasticsearch
+          environment:
+            - node.name=es_master
+            - discovery.type=single-node
+            - discovery.seed_hosts=elasticsearch
+            - cluster.name=docker-c1luster
+            - bootstrap.memory_lock=true
+            - "http.host=0.0.0.0"
+          ports:
+            - 9200:9200
+            - 9300:9300
 commands:
   install_ruby_dependencies:
     steps:
