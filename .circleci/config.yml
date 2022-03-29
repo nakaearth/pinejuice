@@ -42,6 +42,10 @@ commands:
   db_migrate:
     steps:
       - run:
+          name: libffi add symbol
+          command: |
+            sudo ln -s /usr/lib/x86_64-linux-gnu/libffi.so.7.1.0 /usr/lib/x86_64-linux-gnu/libffi.so.6
+      - run:
           name: db migrate
           command: bundle exec rails db:create db:migrate
   wait_mysql_up:
