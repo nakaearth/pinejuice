@@ -11,19 +11,7 @@ executors:
         environment:
           RAILS_ENV: test
       - image: circleci/mysql:8.0
-      - build:
-          context: docker_image/elasticsearch
-          container_name: elasticsearch
-          environment:
-            - node.name=es_master
-            - discovery.type=single-node
-            - discovery.seed_hosts=elasticsearch
-            - cluster.name=docker-c1luster
-            - bootstrap.memory_lock=true
-            - "http.host=0.0.0.0"
-          ports:
-            - 9200:9200
-            - 9300:9300
+
 commands:
   install_ruby_dependencies:
     steps:
@@ -87,7 +75,7 @@ jobs:
           command: |
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
-            bundle exec rspec --profile 10 --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml -- ${TESTFILES}
+            bundle exec rspec -t ~ci --profile 10 --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml -- ${TESTFILES}
       - store_test_results:
           path: test-results
       - store_artifacts:

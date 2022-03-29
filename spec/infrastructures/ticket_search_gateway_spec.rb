@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TicketSearchGateway do
+RSpec.describe TicketSearchGateway, ci: false do
   describe '.call' do
     let(:user) { create(:user) }
 
