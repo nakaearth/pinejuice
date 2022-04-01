@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  slack: circleci/slack@4.1
 
 executors:
   backend-ruby-executor:
@@ -102,6 +104,39 @@ jobs:
           name: Run rubocop
           command: bundle exec rubocop app/ spec/ --parallel
 
+  slack_notify:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+  deploy:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo "deploy my app"
+      - slack/notify:
+          event: fail
+          mentions: '@nakaearth'
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 workflows:
   version: 2
   build_and_test:
@@ -118,3 +153,27 @@ workflows:
       - backend_rubocop:
           requires:
             - backend_bundle_install
+      - slack_notify:
+          requires:
+            - backend_rubocop
+            - backend_test
+      - slack/on-hold:
+          context: slack-secrets
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - slack_notify
+      - pause_workflow:
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - slack/on-hold
+          type: approval
+      - deploy:
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - pause_workflow
