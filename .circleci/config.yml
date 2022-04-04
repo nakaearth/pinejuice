@@ -157,7 +157,6 @@ workflows:
             - backend_rubocop
             - backend_test
       - slack/on-hold:
-          context: slack-secrets
           filters:
             tags:
               only: /^v.*/
