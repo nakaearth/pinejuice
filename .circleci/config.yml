@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@4.9.3
+  slack: circleci/slack@4
 
 executors:
   backend-ruby-executor:
@@ -132,7 +132,7 @@ jobs:
       - run: echo "deploy my app"
       - slack/notify:
           event: fail
-          mentions: '@nakaearth'
+          mentions: '@s_nakamura'
           template: basic_fail_1
       - slack/notify:
           event: pass
