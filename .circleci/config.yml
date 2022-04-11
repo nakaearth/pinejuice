@@ -32,9 +32,9 @@ commands:
       - run:
           name: bundle install
           command: bundle install --path vendor/bundle --jobs=4 --retry=3
-      - run:
-          name: bundle clean
-          command: bundle clean
+      # - run:
+      #     name: bundle clean
+      #     command: bundle clean
       - save_cache:
           name: save gem cache
           key: pinejuice-gem-bundle-{{ checksum "Gemfile.lock" }}
