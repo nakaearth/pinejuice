@@ -5,11 +5,11 @@ orbs:
 executors:
   backend-ruby-executor:
     docker:
-      - image: circleci/ruby:2.7.5
+      - image: cimg/ruby:2.7.5
 
   backend-rails-executor:
     docker:
-      - image: circleci/ruby:2.7.5
+      - image: cimg/ruby:2.7.5
         environment:
           RAILS_ENV: test
           DB_SERVERNAME: 127.0.0.1
