@@ -14,9 +14,10 @@ class ApplicationController < ActionController::API
   end
 
   def login?
-    redirect_to :root if session[:encrypted_user_id].blank?
+    session[:encrypted_user_id].present?
   end
 
+  # TODO: ここ修正する
   def render_404
     render file: "#{Rails.root}/public/404.html", status: 404
   end

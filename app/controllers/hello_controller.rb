@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HelloController < ApplicationController
+class HelloController <  ActionController::API
   def index
     render plain: 'ok'
   end
