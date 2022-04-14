@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HelloController < ApplicationController
-  def new
-    head :ok
+  def index
+    render plain: 'ok'
   end
 end
