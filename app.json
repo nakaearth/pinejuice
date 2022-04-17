@@ -1,4 +1,5 @@
 {
+  "stack": "container",
   "addons": [
     "cleardb"
   ]
