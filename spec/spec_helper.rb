@@ -24,6 +24,7 @@ require 'database_rewinder'
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  config.example_status_persistence_file_path = './spec/spec_results.txt'
   config.before(:all) do
     FactoryBot.reload
   end
