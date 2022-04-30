@@ -25,18 +25,18 @@ services:
       - 9200:9200
       - 9300:9300
 
-  logstash:
-    build:
-      context: docker_image/logstash
-    container_name: logstash
-    ports: ['9600:9600']
-    env_file:
-      - ./environments/db.env
-    volumes:
-      - ./docker_image/logstash/pipeline/tickets_jdbc.conf:/usr/share/logstash/pipeline/tickets_jdbc.conf
-    links:
-      - db
-      - elasticsearch
+  # logstash:
+  #  build:
+  #    context: docker_image/logstash
+  #  container_name: logstash
+  #  ports: ['9600:9600']
+  #  env_file:
+  #    - ./environments/db.env
+  #  volumes:
+  #    - ./docker_image/logstash/pipeline/tickets_jdbc.conf:/usr/share/logstash/pipeline/tickets_jdbc.conf
+  #  links:
+  #    - db
+  #    - elasticsearch
 
   app:
     build:
@@ -60,10 +60,9 @@ services:
       - ./Rakefile:/pinejuice/Rakefile
       - ./spec:/pinejuice/spec
       - ./log:/pinejuice/log
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s"
+    command: "bundle exec rails s -b '0.0.0.0'"
     ports:
       - "3000:3000"
-      - "5000:5000"
     stdin_open: true
     tty: true
     links:
