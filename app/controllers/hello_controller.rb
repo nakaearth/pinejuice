@@ -2,6 +2,6 @@
 
 class HelloController < ActionController::API
   def index
-    render plain: 'ok'
+    render plain: 'ok ok ok!'
   end
 end
