@@ -31,7 +31,7 @@ RSpec.describe TicketsForm, ci: true do
         }
       end
 
-      it 'formに渡されたuser_idがセットされる' do
+      it 'エラーがraiseされる' do
         expect { TicketsForm.new(search_parameters) }.to raise_error(TicketSearchError)
       end
     end

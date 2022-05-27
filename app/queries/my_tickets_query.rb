@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# frozen_string_literal: truea
 
 class MyTicketsQuery
   class << self
