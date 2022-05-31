@@ -6,11 +6,11 @@ class TicketSearchQuery
       # もしpageが1よりも小さい値の場合は強制的に1にする
       tickets = TicketSearchGateway.search(user_id: user_id, keyword: keyword)
 
-      tickets.map do |ticket|
+      tickets[:entries].map do |ticket|
         { 
-            id: ticket.id,
-            title: ticket.title,
-            
+            id: ticket[:id],
+            title: ticket[:title],
+            description: ticket[:description] 
         }
       end
     end

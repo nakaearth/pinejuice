@@ -11,8 +11,8 @@ RSpec.describe MyTicketsQuery, ci: true do
       it '自分のチケットの一覧が取得できる' do
         allow(TicketSearchGateway).to receive(:call).and_return(
           {
-             entries: [],
-             total_count: 0
+             entries: [ { id: my_tickets[0].id, title: my_tickets[0].title}, description: my_tickets[0].description } ],
+             total_count: 1
           }
         )
         tickets = TicketSearchQuery.search(
@@ -20,8 +20,8 @@ RSpec.describe MyTicketsQuery, ci: true do
           keyword: 'テスト'
         )
         aggregate_failures do
-          expect(tickets[:entries].size).to eq 0
-          expect(tickets[:total_count]).to eq 3
+          expect(tickets[:entries].size).to eq 1
+          expect(tickets[:total_count]).to eq 1
         end
       end
     end
