@@ -37,15 +37,6 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.before(:each) do
-    # let(:rspec_session) で指定された値を セッションの初期値とします
-    session = defined?(rspec_session) ? rspec_session : {}
-
-    # destroyメソッドを実行してもエラーにならないようにします（必要であれば）
-    session.class_eval do
-      def destroy
-        nil
-      end
-    end
   end
 
   config.after(:each) do

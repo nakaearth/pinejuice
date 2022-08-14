@@ -1,12 +1,15 @@
 class ApplicationController < ActionController::API
-  before_action :login?
   before_action :current_user
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
 
   def current_user
-    @current_user ||= User.find(Base64.decode64(session[:encrypted_user_id])) if session[:encrypted_user_id]
+    if login?
+      @current_user ||= User.find(Base64.decode64(session[:encrypted_user_id]))
+    else
+      nil
+    end
   rescue ActiveRecord::RecordNotFound => ar
     logger.info "ユーザ情報がありません: #{ar.message}"
     session[:user_id] = nil
