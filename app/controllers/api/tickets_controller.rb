@@ -10,6 +10,7 @@ module Api
     def search
       form = TicketSearchForm.new(params)
       @tickets = TicketSearchQuery.search(user_id: form.user_id, keyword: form.keyword)
+      render json: @tickets
     end
   end
 end

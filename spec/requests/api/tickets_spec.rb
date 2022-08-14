@@ -46,9 +46,9 @@ describe 'Sessions', type: :request, ci: true do
         allow(TicketSearchQuery).to receive(:search).and_return(search_response) 
 
         get '/api/tickets/search', params: params
-        results = response.body
-        expect(results[0][:id]).to eq ticket1.id
-        expect(results[1][:id]).to eq ticket2.id
+        results = JSON.parse(response.body)
+        expect(results[0]['id']).to eq ticket1.id
+        expect(results[1]['id']).to eq ticket2.id
       end
     end
 
