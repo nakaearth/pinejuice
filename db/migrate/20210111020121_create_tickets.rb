@@ -5,8 +5,8 @@ class CreateTickets < ActiveRecord::Migration[6.1]
     create_table :tickets do |t|
       t.string :title, limit: 80, null: false
       t.string :description, limit: 1024, null: false
-      t.integer :point, default: 0
-      t.references :user, index: true
+      t.integer :point, null: false, default: 0
+      t.references :user, index: true, null: false
       t.timestamps
     end
   end
