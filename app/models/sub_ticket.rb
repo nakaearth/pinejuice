@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Ticket < ApplicationRecord
+class SubTicket < ApplicationRecord
   belongs_to :user, dependent: :destroy
-  has_many :sub_tickets
+  belongs_to :ticket, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 80 }
   validates :description, presence: true, length: { maximum: 1024 }
